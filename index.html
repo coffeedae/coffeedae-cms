@@ -277,11 +277,11 @@ if(/status|สถานะ/i.test(k))st=v;else if(/note|หมายเหตุ
 var rows=h<0?[]:R.slice(h+1),H=h<0?[]:R[h],ci=-1,ni=-1;
 H.forEach(function(c,x){if(/secondary|รอง|backup/i.test(c))return;if(/primary|หลัก/i.test(c))ci=x;else if(ni<0&&/name|ชื่อ|user/i.test(c))ni=x});
 rows=rows.filter(function(r){return r.join("").trim()});
-var open=/^open|เปิด/i.test(st),taken=rows.length,
-o='<span class="badge'+(open?" open":"")+'">'+esc(st||"—")+'</span>'+(no?' <span>'+esc(no)+'</span>':"");
-if(tot)o+='<p style="margin:10px 0 0"><b>Slots: '+taken+'/'+tot+'</b> · Remaining: '+Math.max(tot-taken,0)+'</p>';
-if(ci>=0&&rows.length)o+='<ul>'+rows.map(function(r){return '<li>'+esc(ni>=0?r[ni]||"":"")+' '+esc(r[ci]||"")+'</li>'}).join("")+'</ul>';
-document.getElementById("qBody").innerHTML=o}).catch(function(){document.getElementById("qBody").innerHTML='<a href="'+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSCwD4FwtBTbd5a83FwB9kqPHIWxnWRUhydl4fVOnPphTyrcdwCPstPE77uJPb0FJKRvEEoMQFCX1c-/pubhtml?gid=1340071055&single=true"+'" target="_blank" rel="noopener">Open the queue sheet →</a>'});
+var cur=rows.length?rows[rows.length-1]:null,
+who=cur?(ni>=0&&cur[ni]&&cur[ni].trim()?cur[ni]:(ci>=0?cur[ci]||"":"")).trim():"",
+o=cur?'<span class="badge" data-en="'+esc("Now working on "+(who?who+"'s ":"a ")+"commission")+'" data-th="'+esc("กำลังทำคิวของ "+(who||"ลูกค้า"))+'">'+esc("กำลังทำคิวของ "+(who||"ลูกค้า"))+'</span>'
+:'<span class="badge open" data-en="Queue available" data-th="คิวว่าง">Queue available</span>';
+document.getElementById("qBody").innerHTML=o;setLang(lang)}).catch(function(){document.getElementById("qBody").innerHTML='<a href="'+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSCwD4FwtBTbd5a83FwB9kqPHIWxnWRUhydl4fVOnPphTyrcdwCPstPE77uJPb0FJKRvEEoMQFCX1c-/pubhtml?gid=1340071055&single=true"+'" target="_blank" rel="noopener">Open the queue sheet →</a>'});
 setLang(lang);route();
 </script>
 </body>
